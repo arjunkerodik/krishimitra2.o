@@ -37,7 +37,7 @@ router.post('/order', async (req, res) => {
       const productRes = await query(`SELECT price FROM products WHERE id = $1 AND in_stock = true`, [item.product_id]);
       
       if (productRes.rows.length === 0) {
-        return res.status(400).json({ error: \`Product \${item.product_id} not available\` });
+        return res.status(400).json({ error: `Product ${item.product_id} not available` });
       }
 
       const priceAtTime = parseFloat(productRes.rows[0].price);
