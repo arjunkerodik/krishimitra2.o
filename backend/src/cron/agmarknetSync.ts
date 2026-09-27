@@ -122,3 +122,9 @@ cron.schedule('0 1 * * *', () => {
   console.log('Running daily Agmarknet sync...');
   syncAgmarknetData();
 });
+
+// Run immediately if executed directly from terminal
+if (process.argv[1] && process.argv[1].endsWith('agmarknetSync.ts')) {
+  console.log('Direct execution detected. Running sync now...');
+  syncAgmarknetData().then(() => process.exit(0));
+}
