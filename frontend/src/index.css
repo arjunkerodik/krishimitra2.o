@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+@theme {
+  --color-primary-green: #2D5016;
+  --color-secondary-green: #52B788;
+  --color-accent-yellow: #FFD60A;
+}
+
 @layer base {
   body {
     @apply bg-gray-50 text-gray-900;
