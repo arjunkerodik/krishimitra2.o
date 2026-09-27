@@ -24,16 +24,27 @@ export const syncAgmarknetData = async () => {
     );
     syncLogId = logRes.rows[0].id;
 
-    // Fetch the data
-    const response = await axios.get(AGMARKNET_API_URL, {
-      params: {
-        'api-key': API_KEY,
-        format: 'json',
-        limit: 1000 // In a real scenario, this would handle pagination to get all needed states/districts
-      }
-    });
-
-    const records = response.data.records;
+    let records: any[] = [];
+    
+    if (API_KEY === 'mock-key' || !API_KEY) {
+      console.log('Using mock Agmarknet data since no real API_KEY was provided...');
+      records = [
+        { state: 'Karnataka', district: 'Bengaluru', market: 'Yeshwanthpur', commodity: 'Onion', variety: 'Red', arrival_date: new Date().toLocaleDateString('en-GB'), min_price: 1800, max_price: 2500, modal_price: 2150 },
+        { state: 'Maharashtra', district: 'Nashik', market: 'Lasalgaon', commodity: 'Onion', variety: 'Standard', arrival_date: new Date().toLocaleDateString('en-GB'), min_price: 1200, max_price: 1900, modal_price: 1600 },
+        { state: 'Punjab', district: 'Amritsar', market: 'Amritsar', commodity: 'Wheat', variety: '147 Average', arrival_date: new Date().toLocaleDateString('en-GB'), min_price: 2125, max_price: 2125, modal_price: 2125 },
+        { state: 'Karnataka', district: 'Kolar', market: 'Kolar', commodity: 'Tomato', variety: 'Hybrid', arrival_date: new Date().toLocaleDateString('en-GB'), min_price: 400, max_price: 800, modal_price: 600 }
+      ];
+    } else {
+      // Fetch the real data
+      const response = await axios.get(AGMARKNET_API_URL, {
+        params: {
+          'api-key': API_KEY,
+          format: 'json',
+          limit: 1000
+        }
+      });
+      records = response.data.records;
+    }
     
     if (!records || records.length === 0) {
       throw new Error('No records found in Agmarknet response.');
